@@ -1,0 +1,50 @@
+requisitos
+
+criar novo registro  || um add no bd com parametros
+
+titulo,darta,conteudo || os param que o add vai usar
+
+
+listar todos registoersa passados ||  select * from registros
+
+bsucar um registor espedicfifo por id ||  select * from registros by @id
+
+======================== versao chat gpt ===========
+
+
+📌 Requisitos de API / Banco de Dados
+1. Criar Novo Registr
+Descrição: Realiza a inserção de um novo registro no banco de dados.
+
+Operação: INSERT / Add
+
+Parâmetros / Payload:
+
+titulo (string)
+
+data (datetime / date)
+
+conteudo (text / string)
+
+2. Listar Todos os Registros
+Descrição: Retorna a lista completa de todos os registros históricos gravados.
+
+Operação: SELECT
+
+Query Base:
+
+SQL
+SELECT * FROM registros;
+3. Buscar Registro Específico por ID
+Descrição: Retorna os detalhes de um único registro a partir do seu identificador exclusivo.
+
+Operação: SELECT com filtro
+
+Query Base:
+
+SQL
+SELECT * FROM registros WHERE id = @id;
+
+
+
+e cria um login para que cada user olhe para seus registros

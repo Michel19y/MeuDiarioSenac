@@ -1,0 +1,12 @@
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\bin\Debug\net9.0\MeuDiarioSenac.data.deps.json
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\bin\Debug\net9.0\MeuDiarioSenac.data.dll
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\bin\Debug\net9.0\MeuDiarioSenac.data.pdb
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\MeuDiarioSenac.data.csproj.AssemblyReference.cache
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\MeuDiarioSenac.data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\MeuDiarioSenac.data.AssemblyInfoInputs.cache
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\MeuDiarioSenac.data.AssemblyInfo.cs
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\MeuDiarioSenac.data.csproj.CoreCompileInputs.cache
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\MeuDiarioSenac.data.dll
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\refint\MeuDiarioSenac.data.dll
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\MeuDiarioSenac.data.pdb
+C:\Users\Suporte\Documents\michel\dev web\aula 1\MeuDiarioSenac.data\obj\Debug\net9.0\ref\MeuDiarioSenac.data.dll
