@@ -8,7 +8,7 @@ using SistemaRegistros;
 namespace MeuDiarioSenac.Data
 {
     public class RegistroDAO
-    {
+    { 
         public static void SalvarRegistro(int usuarioId, string titulo, string conteudo)
         {
             using (var conexao = MeuDiarioSenacContext.ObterConexao())
