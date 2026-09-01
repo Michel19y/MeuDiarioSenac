@@ -1,5 +1,6 @@
 using System;
 using MeuDiarioSenac.Models;
+using static MeuDiarioSenac.Views.ConsoleEstilo;
 
 namespace MeuDiarioSenac.Views;
 
@@ -8,57 +9,67 @@ public class MenuView
     public string ExibirMenuInicial()
     {
         Console.Clear();
-        Console.WriteLine("=== SISTEMA DE REGISTROS ===");
-        Console.WriteLine("1. Logar");
-        Console.WriteLine("2. Registrar (Criar Conta)");
-        Console.WriteLine("3. Sair");
-        Console.Write("\nEscolha uma opção: ");
+        EscreverLinhaColorida("╔═══════════════════════════════════════════════╗", ConsoleColor.Cyan);
+        EscreverLinhaColorida("║              SISTEMA DE REGISTROS             ║", ConsoleColor.Cyan);
+        EscreverLinhaColorida("╚═══════════════════════════════════════════════╝", ConsoleColor.Cyan);
+        Console.WriteLine();
+        EscreverLinhaColorida("1. 🔑 Logar", ConsoleColor.White);
+        EscreverLinhaColorida("2. 🆕 Registrar (Criar Conta)", ConsoleColor.White);
+        EscreverLinhaColorida("3. 🚪 Sair", ConsoleColor.White);
+        EscreverColorido("\nEscolha uma opção: ", ConsoleColor.Yellow);
         return Console.ReadLine() ?? "";
     }
 
     public void OpcaoInvalida()
     {
-        Console.WriteLine("\nOpção inválida! Pressione ENTER para tentar novamente...");
+        EscreverLinhaColorida("\n⚠️ Opção inválida! Pressione ENTER para tentar novamente...", ConsoleColor.Red);
         Console.ReadLine();
     }
 
     public void Saindo()
     {
-        Console.WriteLine("\nSaindo do sistema... Até logo!");
+        EscreverLinhaColorida("\n👋 Saindo do sistema... Até logo!", ConsoleColor.Cyan);
     }
 
     public string ExibirMenuUsuario(Usuario usuario)
     {
         Console.Clear();
-        Console.WriteLine($"=== ÁREA DO USUÁRIO | Olá, {usuario.Nome} ===");
-        Console.WriteLine("1. Ver registros");
-        Console.WriteLine("2. Criar novo registro");
-        Console.WriteLine("3. Alterar registro");
-        Console.WriteLine("4. Sair (Voltar ao menu inicial)");
-        Console.Write("\nEscolha uma opção: ");
+        EscreverLinhaColorida("╔═══════════════════════════════════════════════╗", ConsoleColor.Green);
+        EscreverLinhaColorida("║                ÁREA DO USUÁRIO                ║", ConsoleColor.Green);
+        EscreverLinhaColorida("╚═══════════════════════════════════════════════╝", ConsoleColor.Green);
+        EscreverColorido("👤 Olá, ", ConsoleColor.Gray);
+        EscreverLinhaColorida(usuario.Nome, ConsoleColor.Yellow);
+        Console.WriteLine();
+        EscreverLinhaColorida("1. 📖 Ver registros", ConsoleColor.White);
+        EscreverLinhaColorida("2. 📝 Criar novo registro", ConsoleColor.White);
+        EscreverLinhaColorida("3. ✏️  Alterar registro", ConsoleColor.White);
+        EscreverLinhaColorida("4. 🚪 Sair (Voltar ao menu inicial)", ConsoleColor.White);
+        EscreverColorido("\nEscolha uma opção: ", ConsoleColor.Yellow);
         return Console.ReadLine() ?? "";
     }
 
     public void SessaoInvalida()
     {
-        Console.WriteLine("\n[ERRO] Sessão inválida. Retornando ao menu...");
+        EscreverLinhaColorida("\n❌ [ERRO] Sessão inválida. Retornando ao menu...", ConsoleColor.Red);
         Console.ReadLine();
     }
 
     public void ExibirCabecalhoMeusRegistros()
     {
         Console.Clear();
-        Console.WriteLine("=== MEUS REGISTROS ===");
+        EscreverLinhaColorida("╔═══════════════════════════════════════════════╗", ConsoleColor.Cyan);
+        EscreverLinhaColorida("║                MEUS REGISTROS                 ║", ConsoleColor.Cyan);
+        EscreverLinhaColorida("╚═══════════════════════════════════════════════╝", ConsoleColor.Cyan);
     }
 
     public void AguardarEnter()
     {
-        Console.WriteLine("\nPressione ENTER para voltar ao menu...");
+        EscreverColorido("\nPressione ENTER para voltar ao menu...", ConsoleColor.DarkGray);
         Console.ReadLine();
     }
 
     public void Deslogando()
     {
-        Console.WriteLine("\nDeslogando...");
+        EscreverLinhaColorida("\n👋 Deslogando...", ConsoleColor.Yellow);
     }
 }

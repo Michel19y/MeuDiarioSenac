@@ -1,5 +1,6 @@
 using System;
 using MeuDiarioSenac.Models;
+using static MeuDiarioSenac.Views.ConsoleEstilo;
 
 namespace MeuDiarioSenac.Views;
 
@@ -142,19 +143,5 @@ public class RegistroView
     {
         EscreverColorido("\nPressione ENTER para voltar ao menu...", ConsoleColor.DarkGray);
         Console.ReadLine();
-    }
-
-    private void EscreverColorido(string mensagem, ConsoleColor cor)
-    {
-        Console.ForegroundColor = cor;
-        Console.Write(mensagem);
-        Console.ResetColor();
-    }
-
-    private void EscreverLinhaColorida(string mensagem, ConsoleColor cor)
-    {
-        Console.ForegroundColor = cor;
-        Console.WriteLine(mensagem);
-        Console.ResetColor();
     }
 }
