@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using MeuDiarioSenac.Models;
@@ -7,27 +6,21 @@ namespace MeuDiarioSenac.Data.Repositories;
 
 public class RegistroRepository
 {
-    public static void Salvar(int usuarioId, string titulo, string conteudo)
+    public static void Salvar(Registro registro)
     {
         using var context = new MeuDiarioSenacContext();
-        context.Registros.Add(new Registro
-        {
-            UsuarioId = usuarioId,
-            Titulo = titulo,
-            Conteudo = conteudo,
-            Data = DateTime.Now
-        });
+        context.Registros.Add(registro);
         context.SaveChanges();
     }
 
-    public static void Alterar(int id, int usuarioId, string novoTitulo, string novoConteudo)
+    public static void Alterar(Registro registro)
     {
         using var context = new MeuDiarioSenacContext();
-        var registro = context.Registros.FirstOrDefault(r => r.Id == id && r.UsuarioId == usuarioId);
-        if (registro == null) return;
+        var existente = context.Registros.FirstOrDefault(r => r.Id == registro.Id && r.UsuarioId == registro.UsuarioId);
+        if (existente == null) return;
 
-        registro.Titulo = novoTitulo;
-        registro.Conteudo = novoConteudo;
+        existente.Titulo = registro.Titulo;
+        existente.Conteudo = registro.Conteudo;
         context.SaveChanges();
     }
 

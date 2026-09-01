@@ -1,4 +1,6 @@
+using System;
 using MeuDiarioSenac.Data.Repositories;
+using MeuDiarioSenac.Models;
 using MeuDiarioSenac.Views;
 
 namespace MeuDiarioSenac.Controllers;
@@ -31,7 +33,14 @@ public class RegistroController
                 view.ConteudoEmBranco();
         }
 
-        RegistroRepository.Salvar(SessaoAtual.UsuarioLogado!.Id, titulo, conteudo);
+        var registro = new Registro
+        {
+            UsuarioId = SessaoAtual.UsuarioLogado!.Id,
+            Titulo = titulo,
+            Conteudo = conteudo,
+            Data = DateTime.Now
+        };
+        RegistroRepository.Salvar(registro);
 
         view.RegistroSalvo();
     }
@@ -79,7 +88,14 @@ public class RegistroController
 
         if (confirmacao == "S")
         {
-            RegistroRepository.Alterar(registroId, SessaoAtual.UsuarioLogado.Id, novoTitulo, novoConteudo);
+            var registroAtualizado = new Registro
+            {
+                Id = registroId,
+                UsuarioId = SessaoAtual.UsuarioLogado.Id,
+                Titulo = novoTitulo,
+                Conteudo = novoConteudo
+            };
+            RegistroRepository.Alterar(registroAtualizado);
             view.AlteracaoSucesso();
         }
         else
