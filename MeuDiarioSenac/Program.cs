@@ -1,11 +1,11 @@
-﻿using MeuDiarioSenac;
+﻿using MeuDiarioSenac.Controllers;
 
-namespace SistemaRegistros;
+namespace MeuDiarioSenac;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Menu.ExibirMenuInicial();
+        new MenuController().ExibirMenuInicial();
     }
 }
