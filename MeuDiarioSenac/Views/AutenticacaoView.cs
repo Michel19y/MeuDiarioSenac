@@ -1,4 +1,5 @@
 using System;
+using static MeuDiarioSenac.Views.ConsoleEstilo;
 
 namespace MeuDiarioSenac.Views;
 
@@ -7,89 +8,93 @@ public class AutenticacaoView
     public void ExibirCabecalhoLogin()
     {
         Console.Clear();
-        Console.WriteLine("=== LOGIN ===");
-        Console.WriteLine("(Digite 0 a qualquer momento para voltar)\n");
+        EscreverLinhaColorida("╔═══════════════════════════════════════════════╗", ConsoleColor.Blue);
+        EscreverLinhaColorida("║                     LOGIN                     ║", ConsoleColor.Blue);
+        EscreverLinhaColorida("╚═══════════════════════════════════════════════╝", ConsoleColor.Blue);
+        EscreverLinhaColorida("(Digite 0 a qualquer momento para voltar)\n", ConsoleColor.DarkGray);
     }
 
     public string LerEmail()
     {
-        Console.Write("Digite seu e-mail: ");
+        EscreverColorido("📧 Digite seu e-mail: ", ConsoleColor.Yellow);
         return Console.ReadLine() ?? "";
     }
 
     public string LerSenha()
     {
-        Console.Write("Digite sua senha: ");
+        EscreverColorido("🔒 Digite sua senha: ", ConsoleColor.Yellow);
         return Console.ReadLine() ?? "";
     }
 
     public void EmailInvalido()
     {
-        Console.WriteLine("\n[ERRO] Formato de e-mail inválido! Exemplo: usuario@email.com");
-        Console.WriteLine("Pressione ENTER para tentar novamente...");
+        EscreverLinhaColorida("\n❌ [ERRO] Formato de e-mail inválido! Exemplo: usuario@email.com", ConsoleColor.Red);
+        EscreverColorido("Pressione ENTER para tentar novamente...", ConsoleColor.DarkGray);
         Console.ReadLine();
     }
 
     public void CredenciaisInvalidas()
     {
-        Console.WriteLine("\n[ERRO] E-mail ou senha incorretos.");
-        Console.WriteLine("Pressione ENTER para tentar novamente...");
+        EscreverLinhaColorida("\n❌ [ERRO] E-mail ou senha incorretos.", ConsoleColor.Red);
+        EscreverColorido("Pressione ENTER para tentar novamente...", ConsoleColor.DarkGray);
         Console.ReadLine();
     }
 
     public void ExibirCabecalhoRegistro()
     {
         Console.Clear();
-        Console.WriteLine("=== CRIAR NOVA CONTA ===");
-        Console.WriteLine("(Digite 0 a qualquer momento para cancelar)\n");
+        EscreverLinhaColorida("╔═══════════════════════════════════════════════╗", ConsoleColor.Yellow);
+        EscreverLinhaColorida("║               CRIAR NOVA CONTA                ║", ConsoleColor.Yellow);
+        EscreverLinhaColorida("╚═══════════════════════════════════════════════╝", ConsoleColor.Yellow);
+        EscreverLinhaColorida("(Digite 0 a qualquer momento para cancelar)\n", ConsoleColor.DarkGray);
     }
 
     public string LerNome()
     {
-        Console.Write("Nome completo: ");
+        EscreverColorido("🙍 Nome completo: ", ConsoleColor.Yellow);
         return Console.ReadLine() ?? "";
     }
 
     public void NomeInvalido()
     {
-        Console.WriteLine("[!] O nome não pode ser vazio.\n");
+        EscreverLinhaColorida("⚠️ [!] O nome não pode ser vazio.\n", ConsoleColor.Red);
     }
 
     public string LerEmailCadastro()
     {
-        Console.Write("E-mail: ");
+        EscreverColorido("📧 E-mail: ", ConsoleColor.Yellow);
         return Console.ReadLine() ?? "";
     }
 
     public void EmailInvalidoCadastro()
     {
-        Console.WriteLine("[!] E-mail inválido! Exemplo: 'nome@email.com'.\n");
+        EscreverLinhaColorida("⚠️ [!] E-mail inválido! Exemplo: 'nome@email.com'.\n", ConsoleColor.Red);
     }
 
     public string LerSenhaCadastro()
     {
-        Console.Write("Senha (Mínimo 6 caracteres e pelo menos 1 número): ");
+        EscreverColorido("🔒 Senha (Mínimo 6 caracteres e pelo menos 1 número): ", ConsoleColor.Yellow);
         return Console.ReadLine() ?? "";
     }
 
     public void SenhaInvalida()
     {
-        Console.WriteLine("[!] Senha fraca! Mínimo de 6 caracteres e 1 número.\n");
+        EscreverLinhaColorida("⚠️ [!] Senha fraca! Mínimo de 6 caracteres e 1 número.\n", ConsoleColor.Red);
     }
 
     public void CadastroSucesso()
     {
-        Console.WriteLine("\n✅ Conta criada com sucesso! Você já pode fazer login.");
+        EscreverLinhaColorida("\n✅ Conta criada com sucesso! Você já pode fazer login.", ConsoleColor.Green);
     }
 
     public void CadastroErro()
     {
-        Console.WriteLine("\n[ERRO] Não foi possível cadastrar a conta.");
+        EscreverLinhaColorida("\n❌ [ERRO] Não foi possível cadastrar a conta.", ConsoleColor.Red);
     }
 
     public void AguardarEnter()
     {
-        Console.WriteLine("\nPressione ENTER para voltar ao menu principal...");
+        EscreverColorido("\nPressione ENTER para voltar ao menu principal...", ConsoleColor.DarkGray);
         Console.ReadLine();
     }
 }
