@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeuDiarioSenac.data\MeuDiarioSenac.data.csproj" />
+    <ProjectReference Include="..\MeuDiarioSenac.Model\MeuDiarioSenac.Model.csproj" />
   </ItemGroup>
 
 </Project>

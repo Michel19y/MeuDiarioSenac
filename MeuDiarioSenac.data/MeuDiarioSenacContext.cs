@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MeuDiarioSenac.Models;
+using MeuDiarioSenac.Model;
 
 namespace MeuDiarioSenac.Data;
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using MeuDiarioSenac.Models;
+using MeuDiarioSenac.Model;
 
 namespace MeuDiarioSenac.Data.Repositories;
 

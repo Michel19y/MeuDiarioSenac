@@ -1,5 +1,5 @@
 using System;
-using MeuDiarioSenac.Models;
+using MeuDiarioSenac.Model;
 using static MeuDiarioSenac.Views.ConsoleEstilo;
 
 namespace MeuDiarioSenac.Views;

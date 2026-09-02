@@ -1,6 +1,6 @@
 using System;
 using MeuDiarioSenac.Data.Repositories;
-using MeuDiarioSenac.Models;
+using MeuDiarioSenac.Model;
 using MeuDiarioSenac.Views;
 
 namespace MeuDiarioSenac.Controllers;

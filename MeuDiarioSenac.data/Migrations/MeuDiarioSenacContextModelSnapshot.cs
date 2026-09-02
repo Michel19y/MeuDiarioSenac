@@ -22,7 +22,7 @@ namespace MeuDiarioSenac.data.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("MeuDiarioSenac.Models.Registro", b =>
+            modelBuilder.Entity("MeuDiarioSenac.Model.Registro", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace MeuDiarioSenac.data.Migrations
                     b.ToTable("registros", (string)null);
                 });
 
-            modelBuilder.Entity("MeuDiarioSenac.Models.Usuario", b =>
+            modelBuilder.Entity("MeuDiarioSenac.Model.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

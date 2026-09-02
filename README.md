@@ -12,7 +12,7 @@ Projeto acadêmico (Senac), construído em .NET 9 seguindo arquitetura **Model /
 
 ## Arquitetura
 
-O código é dividido em dois projetos:
+O código é dividido em três projetos:
 
 ```
 MeuDiarioSenac/           # aplicação de console (apresentação)
@@ -21,18 +21,23 @@ MeuDiarioSenac/           # aplicação de console (apresentação)
 └── Program.cs
 
 MeuDiarioSenac.data/       # camada de dados (DAL)
-├── Models/                # classes de dados puras (Usuario, Registro)
 ├── Repositories/          # acesso a dados via EF Core (sem SQL manual)
 ├── Migrations/            # migrations do EF Core
 └── MeuDiarioSenacContext.cs
+
+MeuDiarioSenac.Model/      # entidades (Model), sem dependência de EF Core ou console
+├── Usuario.cs
+└── Registro.cs
 ```
 
-| Camada | Responsabilidade |
-|---|---|
-| **Model** | `Usuario`, `Registro` — só propriedades, sem lógica |
-| **View** | `MenuView`, `AutenticacaoView`, `RegistroView` — só imprimem e leem do console |
-| **Controller** | `MenuController`, `AutenticacaoController`, `RegistroController` — regra de fluxo e validação |
-| **Repository (DAL)** | `UsuarioRepository`, `RegistroRepository` — consultas/gravações via `DbContext` (EF Core) |
+`MeuDiarioSenac.Model` é referenciado tanto por `MeuDiarioSenac.data` (que precisa das entidades pra montar o `DbContext`) quanto por `MeuDiarioSenac` (Controllers/Views usam os tipos diretamente).
+
+| Camada | Projeto | Responsabilidade |
+|---|---|---|
+| **Model** | `MeuDiarioSenac.Model` | `Usuario`, `Registro` — só propriedades, sem lógica |
+| **View** | `MeuDiarioSenac` | `MenuView`, `AutenticacaoView`, `RegistroView` — só imprimem e leem do console |
+| **Controller** | `MeuDiarioSenac` | `MenuController`, `AutenticacaoController`, `RegistroController` — regra de fluxo e validação |
+| **Repository (DAL)** | `MeuDiarioSenac.data` | `UsuarioRepository`, `RegistroRepository` — consultas/gravações via `DbContext` (EF Core) |
 
 ## Funcionalidades
 

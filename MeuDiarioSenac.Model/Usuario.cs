@@ -1,4 +1,4 @@
-namespace MeuDiarioSenac.Models;
+namespace MeuDiarioSenac.Model;
 
 public class Usuario
 {
