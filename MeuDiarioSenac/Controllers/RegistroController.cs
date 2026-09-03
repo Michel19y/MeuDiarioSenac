@@ -1,5 +1,6 @@
 using System;
-using MeuDiarioSenac.Data.Repositories;
+using System.Collections.Generic;
+using MeuDiarioSenac.Business;
 using MeuDiarioSenac.Model;
 using MeuDiarioSenac.Views;
 
@@ -8,6 +9,7 @@ namespace MeuDiarioSenac.Controllers;
 public class RegistroController
 {
     private readonly RegistroView view = new();
+    private readonly RegistroBusiness business = new();
 
     public void ExecutarCriacaoRegistro()
     {
@@ -37,12 +39,18 @@ public class RegistroController
         {
             UsuarioId = SessaoAtual.UsuarioLogado!.Id,
             Titulo = titulo,
-            Conteudo = conteudo,
-            Data = DateTime.Now
+            Conteudo = conteudo
         };
-        RegistroRepository.Salvar(registro);
 
-        view.RegistroSalvo();
+        try
+        {
+            business.CriarRegistro(registro);
+            view.RegistroSalvo();
+        }
+        catch (Exception ex)
+        {
+            view.ExibirErro(ex.Message);
+        }
     }
 
     public void ExecutarAlteracaoRegistro()
@@ -54,9 +62,12 @@ public class RegistroController
         int registroId = view.LerIdParaAlterar();
         if (registroId == 0) return;
 
-        var registroAtual = RegistroRepository.BuscarPorId(registroId, SessaoAtual.UsuarioLogado.Id);
-
-        if (registroAtual == null)
+        Registro registroAtual;
+        try
+        {
+            registroAtual = business.BuscarRegistroPorId(registroId, SessaoAtual.UsuarioLogado.Id);
+        }
+        catch (Exception)
         {
             view.RegistroNaoEncontrado();
             return;
@@ -95,8 +106,16 @@ public class RegistroController
                 Titulo = novoTitulo,
                 Conteudo = novoConteudo
             };
-            RegistroRepository.Alterar(registroAtualizado);
-            view.AlteracaoSucesso();
+
+            try
+            {
+                business.AlterarRegistro(registroAtualizado);
+                view.AlteracaoSucesso();
+            }
+            catch (Exception ex)
+            {
+                view.ExibirErro(ex.Message);
+            }
         }
         else
         {
@@ -108,7 +127,16 @@ public class RegistroController
 
     public void ListarRegistros(int usuarioId)
     {
-        var registros = RegistroRepository.ListarPorUsuario(usuarioId);
+        List<Registro> registros;
+        try
+        {
+            registros = business.ListarRegistrosPorUsuario(usuarioId);
+        }
+        catch (Exception ex)
+        {
+            view.ExibirErro(ex.Message);
+            return;
+        }
 
         if (registros.Count == 0)
         {

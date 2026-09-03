@@ -139,6 +139,13 @@ public class RegistroView
         EscreverLinhaColorida("\n📭 Nenhum registro encontrado para a sua conta.", ConsoleColor.DarkYellow);
     }
 
+    public void ExibirErro(string mensagem)
+    {
+        EscreverLinhaColorida($"\n❌ [ERRO] {mensagem}", ConsoleColor.Red);
+        EscreverColorido("Pressione ENTER para continuar...", ConsoleColor.DarkGray);
+        Console.ReadLine();
+    }
+
     public void AguardarEnter()
     {
         EscreverColorido("\nPressione ENTER para voltar ao menu...", ConsoleColor.DarkGray);
