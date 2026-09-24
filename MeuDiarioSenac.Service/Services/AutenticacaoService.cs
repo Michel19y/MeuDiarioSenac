@@ -1,25 +1,13 @@
-using System.Text.RegularExpressions;
+using MeuDiarioSenac.Business;
 using MeuDiarioSenac.Data.Repositories;
 using MeuDiarioSenac.Views;
 
-namespace MeuDiarioSenac.Controllers;
+namespace MeuDiarioSenac.Service;
 
-public class AutenticacaoController
+public class AutenticacaoService
 {
     private readonly AutenticacaoView view = new();
-
-    public static bool ValidarEmail(string email)
-    {
-        if (string.IsNullOrWhiteSpace(email)) return false;
-        string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-        return Regex.IsMatch(email, pattern);
-    }
-
-    public static bool ValidarSenha(string senha)
-    {
-        if (string.IsNullOrWhiteSpace(senha)) return false;
-        return senha.Length >= 6 && Regex.IsMatch(senha, @"[0-9]");
-    }
+    private readonly UsuarioBusiness business = new();
 
     public void ExecutarLogin()
     {
@@ -30,7 +18,7 @@ public class AutenticacaoController
             string email = view.LerEmail();
             if (email == "0") return;
 
-            if (!ValidarEmail(email))
+            if (!business.ValidarEmail(email))
             {
                 view.EmailInvalido();
                 continue;
@@ -47,7 +35,7 @@ public class AutenticacaoController
                 continue;
             }
 
-            new MenuController().MenuUsuario();
+            new MenuService().MenuUsuario();
             break;
         }
     }
@@ -72,7 +60,7 @@ public class AutenticacaoController
             email = view.LerEmailCadastro();
             if (email == "0") return;
 
-            if (!ValidarEmail(email))
+            if (!business.ValidarEmail(email))
             {
                 view.EmailInvalidoCadastro();
                 continue;
@@ -86,7 +74,7 @@ public class AutenticacaoController
             senha = view.LerSenhaCadastro();
             if (senha == "0") return;
 
-            if (!ValidarSenha(senha))
+            if (!business.ValidarSenha(senha))
             {
                 view.SenhaInvalida();
                 continue;

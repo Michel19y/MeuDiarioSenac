@@ -1,8 +1,8 @@
 using MeuDiarioSenac.Views;
 
-namespace MeuDiarioSenac.Controllers;
+namespace MeuDiarioSenac.Service;
 
-public class MenuController
+public class MenuService
 {
     private readonly MenuView view = new();
 
@@ -17,11 +17,11 @@ public class MenuController
             switch (opcao)
             {
                 case "1":
-                    new AutenticacaoController().ExecutarLogin();
+                    new AutenticacaoService().ExecutarLogin();
                     break;
 
                 case "2":
-                    new AutenticacaoController().ExecutarRegistro();
+                    new AutenticacaoService().ExecutarRegistro();
                     break;
 
                 case "3":
@@ -55,16 +55,16 @@ public class MenuController
             {
                 case "1":
                     view.ExibirCabecalhoMeusRegistros();
-                    new RegistroController().ListarRegistros(usuario.Id);
+                    new RegistroService().ListarRegistros(usuario.Id);
                     view.AguardarEnter();
                     break;
 
                 case "2":
-                    new RegistroController().ExecutarCriacaoRegistro();
+                    new RegistroService().ExecutarCriacaoRegistro();
                     break;
 
                 case "3":
-                    new RegistroController().ExecutarAlteracaoRegistro();
+                    new RegistroService().ExecutarAlteracaoRegistro();
                     break;
 
                 case "4":

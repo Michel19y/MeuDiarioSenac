@@ -1,6 +1,6 @@
 using MeuDiarioSenac.Model;
 
-namespace MeuDiarioSenac.Controllers;
+namespace MeuDiarioSenac.Service;
 
 public static class SessaoAtual
 {

@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using MeuDiarioSenac.Business;
+using MeuDiarioSenac.Data.Repositories;
 using MeuDiarioSenac.Model;
 using MeuDiarioSenac.Views;
 
-namespace MeuDiarioSenac.Controllers;
+namespace MeuDiarioSenac.Service;
 
-public class RegistroController
+public class RegistroService
 {
     private readonly RegistroView view = new();
     private readonly RegistroBusiness business = new();
@@ -44,7 +45,9 @@ public class RegistroController
 
         try
         {
-            business.CriarRegistro(registro);
+            business.ValidarNovoRegistro(registro);
+            registro.Data = DateTime.Now;
+            RegistroRepository.Salvar(registro);
             view.RegistroSalvo();
         }
         catch (Exception ex)
@@ -62,16 +65,20 @@ public class RegistroController
         int registroId = view.LerIdParaAlterar();
         if (registroId == 0) return;
 
-        Registro registroAtual;
+        Registro? registroEncontrado;
         try
         {
-            registroAtual = business.BuscarRegistroPorId(registroId, SessaoAtual.UsuarioLogado.Id);
+            business.ValidarBusca(registroId, SessaoAtual.UsuarioLogado.Id);
+            registroEncontrado = RegistroRepository.BuscarPorId(registroId, SessaoAtual.UsuarioLogado.Id);
+            business.ValidarRegistroEncontrado(registroEncontrado, "Registro não encontrado.");
         }
         catch (Exception)
         {
             view.RegistroNaoEncontrado();
             return;
         }
+
+        var registroAtual = registroEncontrado!;
 
         view.ExibirCabecalhoNovosDados();
 
@@ -109,7 +116,12 @@ public class RegistroController
 
             try
             {
-                business.AlterarRegistro(registroAtualizado);
+                business.ValidarAlteracaoRegistro(registroAtualizado);
+
+                var existente = RegistroRepository.BuscarPorId(registroAtualizado.Id, registroAtualizado.UsuarioId);
+                business.ValidarRegistroEncontrado(existente, "Registro não encontrado para este usuário.");
+
+                RegistroRepository.Alterar(registroAtualizado);
                 view.AlteracaoSucesso();
             }
             catch (Exception ex)
@@ -130,7 +142,8 @@ public class RegistroController
         List<Registro> registros;
         try
         {
-            registros = business.ListarRegistrosPorUsuario(usuarioId);
+            business.ValidarUsuario(usuarioId);
+            registros = RegistroRepository.ListarPorUsuario(usuarioId);
         }
         catch (Exception ex)
         {

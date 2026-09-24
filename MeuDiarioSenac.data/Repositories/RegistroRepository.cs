@@ -4,7 +4,7 @@ using MeuDiarioSenac.Model;
 
 namespace MeuDiarioSenac.Data.Repositories;
 
-internal class RegistroRepository
+public class RegistroRepository
 {
     public static void Salvar(Registro registro)
     {

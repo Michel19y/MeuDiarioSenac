@@ -1,4 +1,4 @@
-﻿using MeuDiarioSenac.Controllers;
+﻿using MeuDiarioSenac.Service;
 
 namespace MeuDiarioSenac;
 
@@ -6,6 +6,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        new MenuController().ExibirMenuInicial();
+        new MenuService().ExibirMenuInicial();
     }
 }
