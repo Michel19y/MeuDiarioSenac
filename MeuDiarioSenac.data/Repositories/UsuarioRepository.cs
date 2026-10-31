@@ -8,7 +8,23 @@ public class UsuarioRepository
     public static Usuario? RealizarLogin(string email, string senha)
     {
         using var context = new MeuDiarioSenacContext();
-        return context.Usuarios.FirstOrDefault(u => u.Email == email && u.Senha == senha);
+        var usuario = context.Usuarios.FirstOrDefault(u => u.Email == email);
+
+        if (usuario is null)
+            return null;
+
+        bool senhaValida;
+        try
+        {
+            senhaValida = BCrypt.Net.BCrypt.Verify(senha, usuario.Senha);
+        }
+        catch (BCrypt.Net.SaltParseException)
+        {
+            // Conta criada antes da senha passar a ser salva com hash (texto puro no banco).
+            senhaValida = false;
+        }
+
+        return senhaValida ? usuario : null;
     }
 
     public static bool CadastrarUsuario(string nome, string email, string senha)
@@ -16,7 +32,7 @@ public class UsuarioRepository
         using var context = new MeuDiarioSenacContext();
         try
         {
-            var novoUsuario = new Usuario { Nome = nome, Email = email, Senha = senha };
+            var novoUsuario = new Usuario { Nome = nome, Email = email, Senha = BCrypt.Net.BCrypt.HashPassword(senha) };
             context.Usuarios.Add(novoUsuario);
             context.SaveChanges();
             return true;

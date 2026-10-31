@@ -3,6 +3,10 @@ using System.Text;
 using MeuDiarioSenac.Business;
 using MeuDiarioSenac.Data.Repositories;
 using MeuDiarioSenac.Model;
+using MeuDiarioSenac.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +20,33 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSingleton<TokenService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 app.UseCors("Frontend");
+app.UseStaticFiles();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Use(async (context, next) =>
 {
@@ -102,16 +130,19 @@ app.MapPost("/usuarios", (CadastroUsuarioRequest request) =>
         : Results.Conflict("Não foi possível cadastrar o usuário.");
 });
 
-app.MapPost("/usuarios/login", (LoginRequest request) =>
+app.MapPost("/usuarios/login", (LoginRequest request, TokenService tokenService) =>
 {
     var usuario = UsuarioRepository.RealizarLogin(request.Email, request.Senha);
 
-    return usuario is null
-        ? Results.Unauthorized()
-        : Results.Ok(new { usuario.Id, usuario.Nome, usuario.Email });
+    if (usuario is null)
+        return Results.Unauthorized();
+
+    var token = tokenService.GerarToken(usuario);
+
+    return Results.Ok(new { usuario.Id, usuario.Nome, usuario.Email, token });
 });
 
-app.MapGet("/registros/{usuarioId:int}", (int usuarioId) =>
+app.MapGet("/registros/{usuarioId:int}", (int usuarioId, string? busca, string? tag) =>
 {
     try
     {
@@ -122,8 +153,23 @@ app.MapGet("/registros/{usuarioId:int}", (int usuarioId) =>
         return Results.BadRequest(ex.Message);
     }
 
-    return Results.Ok(RegistroRepository.ListarPorUsuario(usuarioId));
-});
+    return Results.Ok(RegistroRepository.ListarPorUsuario(usuarioId, busca, tag));
+}).RequireAuthorization();
+
+app.MapGet("/registros/{usuarioId:int}/estatisticas", (int usuarioId) =>
+{
+    try
+    {
+        registroBusiness.ValidarUsuario(usuarioId);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+
+    var registros = RegistroRepository.ListarPorUsuario(usuarioId);
+    return Results.Ok(registroBusiness.MontarEstatisticas(registros));
+}).RequireAuthorization();
 
 app.MapGet("/registros/{usuarioId:int}/{id:int}", (int usuarioId, int id) =>
 {
@@ -138,7 +184,7 @@ app.MapGet("/registros/{usuarioId:int}/{id:int}", (int usuarioId, int id) =>
 
     var registro = RegistroRepository.BuscarPorId(id, usuarioId);
     return registro is null ? Results.NotFound() : Results.Ok(registro);
-});
+}).RequireAuthorization();
 
 app.MapPost("/registros", (Registro registro) =>
 {
@@ -154,7 +200,7 @@ app.MapPost("/registros", (Registro registro) =>
     registro.Data = DateTime.Now;
     RegistroRepository.Salvar(registro);
     return Results.Created($"/registros/{registro.UsuarioId}/{registro.Id}", registro);
-});
+}).RequireAuthorization();
 
 app.MapPut("/registros", (Registro registro) =>
 {
@@ -175,7 +221,64 @@ app.MapPut("/registros", (Registro registro) =>
 
     RegistroRepository.Alterar(registro);
     return Results.NoContent();
-});
+}).RequireAuthorization();
+
+app.MapDelete("/registros/{usuarioId:int}/{id:int}", (int usuarioId, int id) =>
+{
+    try
+    {
+        registroBusiness.ValidarBusca(id, usuarioId);
+        var existente = RegistroRepository.BuscarPorId(id, usuarioId);
+        registroBusiness.ValidarRegistroEncontrado(existente, "Registro não encontrado para este usuário.");
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.NotFound(ex.Message);
+    }
+
+    RegistroRepository.Deletar(id, usuarioId);
+    return Results.NoContent();
+}).RequireAuthorization();
+
+app.MapPost("/registros/{id:int}/imagem", async (int id, [FromForm] int usuarioId, IFormFile imagem) =>
+{
+    try
+    {
+        registroBusiness.ValidarBusca(id, usuarioId);
+        var existente = RegistroRepository.BuscarPorId(id, usuarioId);
+        registroBusiness.ValidarRegistroEncontrado(existente, "Registro não encontrado para este usuário.");
+        registroBusiness.ValidarImagem(imagem.ContentType, imagem.Length);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return Results.NotFound(ex.Message);
+    }
+
+    var pastaUploads = Path.Combine(app.Environment.WebRootPath, "uploads", "registros");
+    Directory.CreateDirectory(pastaUploads);
+
+    var extensao = Path.GetExtension(imagem.FileName);
+    var nomeArquivo = $"{Guid.NewGuid()}{extensao}";
+    var caminhoCompleto = Path.Combine(pastaUploads, nomeArquivo);
+
+    await using (var stream = File.Create(caminhoCompleto))
+    {
+        await imagem.CopyToAsync(stream);
+    }
+
+    var imagemUrl = $"/uploads/registros/{nomeArquivo}";
+    RegistroRepository.AtualizarImagem(id, usuarioId, imagemUrl);
+
+    return Results.Ok(new { imagemUrl });
+}).RequireAuthorization().DisableAntiforgery();
 
 app.Run();
 

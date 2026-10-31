@@ -39,6 +39,14 @@ namespace MeuDiarioSenac.data.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("data");
 
+                    b.Property<string>("ImagemUrl")
+                        .HasColumnType("longtext")
+                        .HasColumnName("imagem_url");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("longtext")
+                        .HasColumnName("tags");
+
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("longtext")

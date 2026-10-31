@@ -30,6 +30,8 @@ public class MeuDiarioSenacContext : DbContext
             entity.Property(r => r.Titulo).HasColumnName("titulo");
             entity.Property(r => r.Data).HasColumnName("data");
             entity.Property(r => r.Conteudo).HasColumnName("conteudo");
+            entity.Property(r => r.Tags).HasColumnName("tags");
+            entity.Property(r => r.ImagemUrl).HasColumnName("imagem_url");
         });
     }
 }

@@ -9,4 +9,6 @@ public class Registro
     public string Titulo { get; set; } = string.Empty;
     public DateTime Data { get; set; }
     public string Conteudo { get; set; } = string.Empty;
+    public string? Tags { get; set; }
+    public string? ImagemUrl { get; set; }
 }
